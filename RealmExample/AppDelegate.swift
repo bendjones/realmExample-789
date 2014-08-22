@@ -16,6 +16,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication!, didFinishLaunchingWithOptions launchOptions: NSDictionary!) -> Bool {
         // Override point for customization after application launch.
+
+        let exampleArray = ExampleObject.allObjects()
+
+        var bundlePath: NSURL? = NSBundle.mainBundle().URLForResource("exampleFixtureFile", withExtension: "json")
+
+        if let path = bundlePath {
+            var fixtureData: NSData? = NSData(contentsOfURL: path)
+
+            if let data = fixtureData {
+                var error: NSError?
+                var json = NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments, error: &error) as? [NSDictionary]
+
+                if let exampleArray = json {
+                    ExampleObject.createExampleFromResponse(exampleArray)
+                }
+            }
+        }
+
         return true
     }
 
